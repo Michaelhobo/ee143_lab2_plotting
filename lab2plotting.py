@@ -7,7 +7,7 @@ def graph_from_file(filename, title=None, xlabel="V", ylabel="I"):
   global fig_num
   data = []
   f = open(filename)
-  title = filename.replace('.csv', '')
+  title = filename.replace('.csv', '').replace(dirname, '')
   titlestring = "Setup title"
   for line in f:
     if len(line) > 0:
