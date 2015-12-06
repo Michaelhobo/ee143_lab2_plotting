@@ -12,7 +12,10 @@ def graph_from_file(filename, title=None, xlabel="V", ylabel="I"):
   for line in f:
     if len(line) > 0:
       if line[0].isdigit() or line[0]=='-':
-        data.append([Decimal(s) for s in line.split(',')])
+        try:
+          data.append([Decimal(s) for s in line.split(',')[0:2]])
+        except:
+          pdb.set_trace()
       elif line[0].isalpha():
         data = []
       if not title and titlestring in line:
@@ -21,12 +24,26 @@ def graph_from_file(filename, title=None, xlabel="V", ylabel="I"):
           title = linevals[1].rstrip().replace('"', '').replace('/','')
   x = []
   y = []
+  xy = []
+  last_x = None
   for d in data:
-    x.append(d[0])
-    y.append(d[1])
+    if (not last_x) or (last_x and last_x <= d[0]):
+      x.append(d[0])
+      y.append(d[1])
+      last_x = d[0]
+    else:
+      last_x = None
+      xy.append(x)
+      xy.append(y)
+      xy.append('b-')
+      x = []
+      y = []
+  xy.append(x)
+  xy.append(y)
+  xy.append('b-')
   plt.figure(fig_num)
   fig_num += 1
-  plt.plot(x,y)
+  plt.plot(*xy)
   if not title:
     title = " "
   plt.title(title)
@@ -45,10 +62,13 @@ def graph_from_file(filename, title=None, xlabel="V", ylabel="I"):
   if any(dev_id in title for dev_id in ["[7]","[2c]","[2d]"]):
     ylabel = "IA"
     xlabel = "VA"
+  if "[14]" in title:
+    xlabel = "VIN"
+    ylabel = "VOUT"
   plt.xlabel(xlabel)
   plt.ylabel(ylabel)
   outdirname = "plotfiles/"
-  plt.savefig(outdirname + title + '.png')
+  plt.savefig(outdirname + title + '.png',bbox_inches="tight")
 filenames = []
 dirname = "datafiles/"
 for (dirpath, dirnames, files) in walk(dirname):
