@@ -3,7 +3,7 @@ from os import walk
 from decimal import *
 import pdb
 fig_num = 1
-def graph_from_file(filename, title=None, xlabel="V", ylabel="I"):
+def graph_from_file(filename, title=None, xlabel="V (V)", ylabel="I (A)"):
   global fig_num
   data = []
   f = open(filename)
@@ -48,23 +48,23 @@ def graph_from_file(filename, title=None, xlabel="V", ylabel="I"):
     title = " "
   plt.title(title)
   if any(dev_id in title for dev_id in ["[3]","[4]","[5]"]):
-    xlabel = "BIASVAL"
-    ylabel = "CX"
+    xlabel = "BIASVAL (V)"
+    ylabel = "CX (F)"
   if "I-VD" in title:
-    ylabel = "ID"
-    xlabel = "VD"
+    ylabel = "ID (A)"
+    xlabel = "VD (V)"
   if "I-VG" in title:
-    ylabel = "ID"
-    xlabel = "VG"
+    ylabel = "ID (A)"
+    xlabel = "VG (V)"
   if any(dev_id in title for dev_id in ["[2a]","[2b]"]):
-    ylabel = "IS1"
-    xlabel = "VDIF"
+    ylabel = "IS1 (A)"
+    xlabel = "VDIF (V)"
   if any(dev_id in title for dev_id in ["[7]","[2c]","[2d]"]):
-    ylabel = "IA"
-    xlabel = "VA"
+    ylabel = "IA (A)"
+    xlabel = "VA (V)"
   if "[14]" in title:
-    xlabel = "VIN"
-    ylabel = "VOUT"
+    xlabel = "VIN (V)"
+    ylabel = "VOUT (V)"
   plt.xlabel(xlabel)
   plt.ylabel(ylabel)
   outdirname = "plotfiles/"
