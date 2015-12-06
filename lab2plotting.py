@@ -30,6 +30,21 @@ def graph_from_file(filename, title=None, xlabel="V", ylabel="I"):
   if not title:
     title = " "
   plt.title(title)
+  if any(dev_id in title for dev_id in ["[3]","[4]","[5]"]):
+    xlabel = "BIASVAL"
+    ylabel = "CX"
+  if "I-VD" in title:
+    ylabel = "ID"
+    xlabel = "VD"
+  if "I-VG" in title:
+    ylabel = "ID"
+    xlabel = "VG"
+  if any(dev_id in title for dev_id in ["[2a]","[2b]"]):
+    ylabel = "IS1"
+    xlabel = "VDIF"
+  if any(dev_id in title for dev_id in ["[7]","[2c]","[2d]"]):
+    ylabel = "IA"
+    xlabel = "VA"
   plt.xlabel(xlabel)
   plt.ylabel(ylabel)
   outdirname = "plotfiles/"
