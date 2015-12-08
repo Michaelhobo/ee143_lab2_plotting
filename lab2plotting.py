@@ -30,7 +30,7 @@ def graph_from_file(filename, title=None, xlabel="V (V)", ylabel="I (A)"):
     x = numpy.linspace(0,5,100)
     Cox = 1.86249*10**(-8)
     Vt = float(argv[1])
-    shift_y = 0.0000002
+    shift_y = 0.00000025
     y = mu*Cox/2*(x-Vt)**2+shift_y
     plt.plot(x,y)
     title = "VT = " + argv[1] + "; mu = " + argv[2]
@@ -89,7 +89,6 @@ for (dirpath, dirnames, files) in walk(dirname):
   filenames.extend(files)
 for filename in filenames:
   graph_from_file(dirname + filename)
-plt.show()
 print "Entering pdb."
 print "Use plt.plot() to show all plots."
-#pdb.set_trace()
+pdb.set_trace()
