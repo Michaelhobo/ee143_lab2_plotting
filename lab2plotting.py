@@ -2,6 +2,8 @@ import matplotlib.pyplot as plt
 from os import walk
 from decimal import *
 import pdb
+from sys import argv
+import numpy
 fig_num = 1
 def graph_from_file(filename, title=None, xlabel="V (V)", ylabel="I (A)"):
   global fig_num
@@ -22,6 +24,17 @@ def graph_from_file(filename, title=None, xlabel="V (V)", ylabel="I (A)"):
         linevals = line.split(',')
         if len(line) >= 2:
           title = linevals[1].rstrip().replace('"', '').replace('/','')
+  only_zero = False
+  if len(argv) is 3:
+    mu = int(argv[2])
+    x = numpy.linspace(0,5,100)
+    Cox = 1.86249*10**(-8)
+    Vt = float(argv[1])
+    shift_y = 0.0000002
+    y = mu*Cox/2*(x-Vt)**2+shift_y
+    plt.plot(x,y)
+    title = "VT = " + argv[1] + "; mu = " + argv[2]
+    only_zero = True
   x = []
   y = []
   xy = []
@@ -32,12 +45,13 @@ def graph_from_file(filename, title=None, xlabel="V (V)", ylabel="I (A)"):
       y.append(d[1])
       last_x = d[0]
     else:
-      last_x = None
-      xy.append(x)
-      xy.append(y)
-      xy.append('b-')
-      x = []
-      y = []
+      if not only_zero:
+        last_x = None
+        xy.append(x)
+        xy.append(y)
+        xy.append('b-')
+        x = []
+        y = []
   xy.append(x)
   xy.append(y)
   xy.append('b-')
@@ -75,6 +89,7 @@ for (dirpath, dirnames, files) in walk(dirname):
   filenames.extend(files)
 for filename in filenames:
   graph_from_file(dirname + filename)
+plt.show()
 print "Entering pdb."
 print "Use plt.plot() to show all plots."
-pdb.set_trace()
+#pdb.set_trace()
